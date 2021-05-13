@@ -1,0 +1,508 @@
+Script started on 2021-05-14 01:35:14+03:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="204" LINES="59"]
+]0;kapsar@home: ~/otus/lesson4[01;32mkapsar@home[00m:[01;34m~/otus/lesson4[00m$ vagrant ssh server
+Last login: Thu May 13 21:26:52 2021 from 10.0.2.2
+]0;vagrant@server:~[vagrant@server ~]$ sudo su
+]0;root@server:/home/vagrant[root@server vagrant]# zpool create poolmirror sdb sdc
+]0;root@server:/home/vagrant[root@server vagrant]# zpl[Koolt [K[K[Kl list
+NAME         SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+poolmirror  1.88G   112K  1.87G        -         -     0%     0%  1.00x    ONLINE  -
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create poolmirrot[Kr [K/gip[K[Kzip
+]0;root@server:/home/vagrant[root@server vagrant]# cre[K[K[Kls[K[Kzfs list
+NAME              USED  AVAIL     REFER  MOUNTPOINT
+poolmirror        128K  1.75G     25.5K  /poolmirror
+poolmirror/gzip    24K  1.75G       24K  /poolmirror/gzip
+]0;root@server:/home/vagrant[root@server vagrant]# zfs listcreate poolmirror/gzip[K[Kip-n
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create poolmirror/gzip-n[K[K[K[K[K[Kzle
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create poolmirror/zle[K[K[Klsjb
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create poolmirror/lsjb[K[K[Kz4
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create poolmirror/lz4sjb[1Pzlegzip-nlist[Kcreate poolmirror/gziplist[K
+NAME                USED  AVAIL     REFER  MOUNTPOINT
+poolmirror          255K  1.75G     28.5K  /poolmirror
+poolmirror/gzip      24K  1.75G       24K  /poolmirror/gzip
+poolmirror/gzip-n    24K  1.75G       24K  /poolmirror/gzip-n
+poolmirror/lsjb      24K  1.75G       24K  /poolmirror/lsjb
+poolmirror/lz4       24K  1.75G       24K  /poolmirror/lz4
+poolmirror/zle       24K  1.75G       24K  /poolmirror/zle
+]0;root@server:/home/vagrant[root@server vagrant]# zpool status
+  pool: poolmirror
+ state: ONLINE
+  scan: none requested
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	poolmirror  ONLINE       0     0     0
+	  sdb       ONLINE       0     0     0
+	  sdc       ONLINE       0     0     0
+
+errors: No known data errors
+]0;root@server:/home/vagrant[root@server vagrant]# zfs get mounted
+NAME               PROPERTY  VALUE    SOURCE
+poolmirror         mounted   yes      -
+poolmirror/gzip    mounted   yes      -
+poolmirror/gzip-n  mounted   yes      -
+poolmirror/lsjb    mounted   yes      -
+poolmirror/lz4     mounted   yes      -
+poolmirror/zle     mounted   yes      -
+]0;root@server:/home/vagrant[root@server vagrant]# df -h
+Filesystem         Size  Used Avail Use% Mounted on
+devtmpfs           474M     0  474M   0% /dev
+tmpfs              490M     0  490M   0% /dev/shm
+tmpfs              490M   13M  478M   3% /run
+tmpfs              490M     0  490M   0% /sys/fs/cgroup
+/dev/sda1           10G  3.3G  6.8G  33% /
+tmpfs               98M     0   98M   0% /run/user/1000
+poolmirror         1.8G  128K  1.8G   1% /poolmirror
+poolmirror/gzip    1.8G  128K  1.8G   1% /poolmirror/gzip
+poolmirror/gzip-n  1.8G  128K  1.8G   1% /poolmirror/gzip-n
+poolmirror/zle     1.8G  128K  1.8G   1% /poolmirror/zle
+poolmirror/lsjb    1.8G  128K  1.8G   1% /poolmirror/lsjb
+poolmirror/lz4     1.8G  128K  1.8G   1% /poolmirror/lz4
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create -o compression=gzip /poolmirror/gzip
+cannot create '/poolmirror/gzip': leading slash in name
+]0;root@server:/home/vagrant[root@server vagrant]# zfs create -o compression=gzip /poolmirror/gzip[C[C[1P[1P[1P[1P[1P[1P[1P[1P[1P[1@s[1@e[1@t
+cannot open '/poolmirror/gzip': leading slash in name
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=gzip /poolmirror/gzip[1Ppoolmirror/gzip
+]0;root@server:/home/vagrant[root@server vagrant]# zfs list -o compression
+COMPRESS
+     off
+    gzip
+     off
+     off
+     off
+     off
+]0;root@server:/home/vagrant[root@server vagrant]# zfs list -o compressionset compression=gzip poolmirror/gzip-n[C- poolmirror/gzip-nn poolmirror/gzip-n
+cannot set property for 'poolmirror/gzip-n': 'compression' must be one of 'on | off | lzjb | gzip | gzip-[1-9] | zle | lz4'
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=gzip-n poolmirror/gzip-n[1P poolmirror/gzip-nn poolmirror/gzip-n[1P poolmirror/gzip-nN poolmirror/gzip-n
+cannot set property for 'poolmirror/gzip-n': 'compression' must be one of 'on | off | lzjb | gzip | gzip-[1-9] | zle | lz4'
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=gzip-N poolmirror/gzip-n[1P poolmirror/gzip-n9 poolmirror/gzip-n
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=gzip-9 poolmirror/gzip-n[K[K[K[K[K[Kzle[1P poolmirror/zle[1P poolmirror/zle[1P poolmirror/zle[1P poolmirror/zle[1P poolmirror/zle[1P poolmirror/zlez poolmirror/zlel poolmirror/zlee poolmirror/zle
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=zle poolmirror/zle[C[K[K[Klsjb[C[1P poolmirror/lsjb[1P poolmirror/lsjb[1P poolmirror/lsjbl poolmirror/lsjbs poolmirror/lsjbj poolmirror/lsjbb poolmirror/lsjb
+cannot set property for 'poolmirror/lsjb': 'compression' must be one of 'on | off | lzjb | gzip | gzip-[1-9] | zle | lz4'
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=lsjb poolmirror/lsjb[1P[1@z
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=lzjb poolmirror/lsjb[C[K[K[Kz4[C[1P poolmirror/lz4[1P poolmirror/lz4[1P poolmirror/lz4z poolmirror/lz44 poolmirror/lz4
+]0;root@server:/home/vagrant[root@server vagrant]# zfs set compression=lz4 poolmirror/lz4jb poolmirror/lsjbs[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[2Pzle poolmirror/zlegzip-9 poolmirror/gzip-nN[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cn[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[21Plist -o compression
+COMPRESS
+     off
+    gzip
+  gzip-9
+    lzjb
+     lz4
+     zle
+]0;root@server:/home/vagrant[root@server vagrant]# cd /poolmirror/gzip
+]0;root@server:/poolmirror/gzip[root@server gzip]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  1 1181k    1 13961    0     0  22737      0  0:00:53 --:--:--  0:00:53 22700100 1181k  100 1181k    0     0   876k      0  0:00:01  0:00:01 --:--:--  876k
+]0;root@server:/poolmirror/gzip[root@server gzip]# cd /poolmirror/gzip-n/
+]0;root@server:/poolmirror/gzip-n[root@server gzip-n]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 32 1181k   32  381k    0     0   353k      0  0:00:03  0:00:01  0:00:02  352k100 1181k  100 1181k    0     0   971k      0  0:00:01  0:00:01 --:--:--  970k
+]0;root@server:/poolmirror/gzip-n[root@server gzip-n]# cd /lib[K[K[Kpoolmirror/zle/
+]0;root@server:/poolmirror/zle[root@server zle]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 10 1181k   10  125k    0     0   138k      0  0:00:08 --:--:--  0:00:08  138k100 1181k  100 1181k    0     0   884k      0  0:00:01  0:00:01 --:--:--  884k
+]0;root@server:/poolmirror/zle[root@server zle]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt[K[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd /poolmirror/zle/[Kurl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd /poolmirror/zle/[K[K[K[K[Klsjb/
+]0;root@server:/poolmirror/lsjb[root@server lsjb]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 32 1181k   32  385k    0     0   358k      0  0:00:03  0:00:01  0:00:02  358k100 1181k  100 1181k    0     0   974k      0  0:00:01  0:00:01 --:--:--  974k
+]0;root@server:/poolmirror/lsjb[root@server lsjb]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt[K[K[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cd /poolmirror/lsjb/[K[K[K[K[Kz4
+]0;root@server:/poolmirror/lz4[root@server lz4]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt[K[root@server lz4]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt[K[root@server lz4]# curl -o "War_and_Peace.txt" -J -L https://www.gutenberg.org/cache/epub/2600/pg2600.txt
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 1181k  100 1181k    0     0   973k      0  0:00:01  0:00:01 --:--:--  973k
+]0;root@server:/poolmirror/lz4[root@server lz4]# [K[root@server lz4]# [K[root@server lz4]# [K[root@server lz4]# 
+]0;root@server:/poolmirror/lz4[root@server lz4]# 
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls
+War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls -la
+total 1186
+drwxr-xr-x. 2 root root       3 May 13 22:52 [0m[38;5;33m.[0m
+drwxr-xr-x. 7 root root       7 May 13 22:39 [38;5;33m..[0m
+-rw-r--r--. 1 root root 1209374 May 13 22:52 War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls -la[K[K[K-l 
+total 1185
+-rw-r--r--. 1 root root 1209374 May 13 22:52 War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls -l /zp[K[Kpoolmirror/gzip
+total 1184
+-rw-r--r--. 1 root root 1209374 May 13 22:51 War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls -l /poolmirror/gzip-n/
+total 1184
+-rw-r--r--. 1 root root 1209374 May 13 22:51 War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# ls -l /poolmirror/gzip-n/[K[K[K[K[K[K[Kl[Kzle/
+total 1185
+-rw-r--r--. 1 root root 1209374 May 13 22:51 War_and_Peace.txt
+]0;root@server:/poolmirror/lz4[root@server lz4]# zfs get compression
+NAME               PROPERTY     VALUE     SOURCE
+poolmirror         compression  off       default
+poolmirror/gzip    compression  gzip      local
+poolmirror/gzip-n  compression  gzip-9    local
+poolmirror/lsjb    compression  lzjb      local
+poolmirror/lz4     compression  lz4       local
+poolmirror/zle     compression  zle       local
+]0;root@server:/poolmirror/lz4[root@server lz4]# zfs get compression -м
+invalid option '�'
+usage:
+	get [-rHp] [-d max] [-o "all" | field[,...]]
+	    [-t type[,...]] [-s source[,...]]
+	    <"all" | property[,...]> [filesystem|volume|snapshot|bookmark] ...
+
+The following properties are supported:
+
+	PROPERTY       EDIT  INHERIT   VALUES
+
+	available        NO       NO   <size>
+	clones           NO       NO   <dataset>[,...]
+	compressratio    NO       NO   <1.00x or higher if compressed>
+	createtxg        NO       NO   <uint64>
+	creation         NO       NO   <date>
+	defer_destroy    NO       NO   yes | no
+	encryptionroot   NO       NO   <filesystem | volume>
+	filesystem_count  NO       NO   <count>
+	guid             NO       NO   <uint64>
+	keystatus        NO       NO   none | unavailable | available
+	logicalreferenced  NO       NO   <size>
+	logicalused      NO       NO   <size>
+	mounted          NO       NO   yes | no
+	objsetid         NO       NO   <uint64>
+	origin           NO       NO   <snapshot>
+	receive_resume_token  NO       NO   <string token>
+	refcompressratio  NO       NO   <1.00x or higher if compressed>
+	referenced       NO       NO   <size>
+	snapshot_count   NO       NO   <count>
+	type             NO       NO   filesystem | volume | snapshot | bookmark
+	used             NO       NO   <size>
+	usedbychildren   NO       NO   <size>
+	usedbydataset    NO       NO   <size>
+	usedbyrefreservation  NO       NO   <size>
+	usedbysnapshots  NO       NO   <size>
+	userrefs         NO       NO   <count>
+	written          NO       NO   <size>
+	aclinherit      YES      YES   discard | noallow | restricted | passthrough | passthrough-x
+	acltype         YES      YES   noacl | posixacl
+	atime           YES      YES   on | off
+	canmount        YES       NO   on | off | noauto
+	casesensitivity  NO      YES   sensitive | insensitive | mixed
+	checksum        YES      YES   on | off | fletcher2 | fletcher4 | sha256 | sha512 | skein | edonr
+	compression     YES      YES   on | off | lzjb | gzip | gzip-[1-9] | zle | lz4
+	context         YES       NO   <selinux context>
+	copies          YES      YES   1 | 2 | 3
+	dedup           YES      YES   on | off | verify | sha256[,verify], sha512[,verify], skein[,verify], edonr,verify
+	defcontext      YES       NO   <selinux defcontext>
+	devices         YES      YES   on | off
+	dnodesize       YES      YES   legacy | auto | 1k | 2k | 4k | 8k | 16k
+	encryption       NO      YES   on | off | aes-128-ccm | aes-192-ccm | aes-256-ccm | aes-128-gcm | aes-192-gcm | aes-256-gcm
+	exec            YES      YES   on | off
+	filesystem_limit YES       NO   <count> | none
+	fscontext       YES       NO   <selinux fscontext>
+	keyformat        NO       NO   none | raw | hex | passphrase
+	keylocation     YES       NO   prompt | <file URI>
+	logbias         YES      YES   latency | throughput
+	mlslabel        YES      YES   <sensitivity label>
+	mountpoint      YES      YES   <path> | legacy | none
+	nbmand          YES      YES   on | off
+	normalization    NO      YES   none | formC | formD | formKC | formKD
+	overlay         YES      YES   on | off
+	pbkdf2iters      NO       NO   <iters>
+	primarycache    YES      YES   all | none | metadata
+	quota           YES       NO   <size> | none
+	readonly        YES      YES   on | off
+	recordsize      YES      YES   512 to 1M, power of 2
+	redundant_metadata YES      YES   all | most
+	refquota        YES       NO   <size> | none
+	refreservation  YES       NO   <size> | none
+	relatime        YES      YES   on | off
+	reservation     YES       NO   <size> | none
+	rootcontext     YES       NO   <selinux rootcontext>
+	secondarycache  YES      YES   all | none | metadata
+	setuid          YES      YES   on | off
+	sharenfs        YES      YES   on | off | share(1M) options
+	sharesmb        YES      YES   on | off | sharemgr(1M) options
+	snapdev         YES      YES   hidden | visible
+	snapdir         YES      YES   hidden | visible
+	snapshot_limit  YES       NO   <count> | none
+	special_small_blocks YES      YES   zero or 512 to 1M, power of 2
+	sync            YES      YES   standard | always | disabled
+	utf8only         NO      YES   on | off
+	version         YES       NO   1 | 2 | 3 | 4 | 5 | current
+	volblocksize     NO      YES   512 to 128k, power of 2
+	volmode         YES      YES   default | full | geom | dev | none
+	volsize         YES       NO   <size>
+	vscan           YES      YES   on | off
+	xattr           YES      YES   on | off | dir | sa
+	zoned           YES      YES   on | off
+	userused@...     NO       NO   <size>
+	groupused@...    NO       NO   <size>
+	projectused@...  NO       NO   <size>
+	userobjused@...  NO       NO   <size>
+	groupobjused@...  NO       NO   <size>
+	projectobjused@...  NO       NO   <size>
+	userquota@...   YES       NO   <size> | none
+	groupquota@...  YES       NO   <size> | none
+	projectquota@... YES       NO   <size> | none
+	userobjquota@... YES       NO   <size> | none
+	groupobjquota@... YES       NO   <size> | none
+	projectobjquota@... YES       NO   <size> | none
+	written@<snap>   NO       NO   <size>
+
+Sizes are specified in bytes with standard units such as K, M, G, etc.
+
+User-defined properties can be specified by using a name containing a colon (:).
+
+The {user|group|project}[obj]{used|quota}@ properties must be appended with
+a user|group|project specifier of one of these forms:
+    POSIX name      (eg: "matt")
+    POSIX id        (eg: "126829")
+    SMB name@domain (eg: "matt@sun")
+    SMB SID         (eg: "S-1-234-567-89")
+]0;root@server:/poolmirror/lz4[root@server lz4]# zfs get compression -м[Kv
+invalid option 'v'
+usage:
+	get [-rHp] [-d max] [-o "all" | field[,...]]
+	    [-t type[,...]] [-s source[,...]]
+	    <"all" | property[,...]> [filesystem|volume|snapshot|bookmark] ...
+
+The following properties are supported:
+
+	PROPERTY       EDIT  INHERIT   VALUES
+
+	available        NO       NO   <size>
+	clones           NO       NO   <dataset>[,...]
+	compressratio    NO       NO   <1.00x or higher if compressed>
+	createtxg        NO       NO   <uint64>
+	creation         NO       NO   <date>
+	defer_destroy    NO       NO   yes | no
+	encryptionroot   NO       NO   <filesystem | volume>
+	filesystem_count  NO       NO   <count>
+	guid             NO       NO   <uint64>
+	keystatus        NO       NO   none | unavailable | available
+	logicalreferenced  NO       NO   <size>
+	logicalused      NO       NO   <size>
+	mounted          NO       NO   yes | no
+	objsetid         NO       NO   <uint64>
+	origin           NO       NO   <snapshot>
+	receive_resume_token  NO       NO   <string token>
+	refcompressratio  NO       NO   <1.00x or higher if compressed>
+	referenced       NO       NO   <size>
+	snapshot_count   NO       NO   <count>
+	type             NO       NO   filesystem | volume | snapshot | bookmark
+	used             NO       NO   <size>
+	usedbychildren   NO       NO   <size>
+	usedbydataset    NO       NO   <size>
+	usedbyrefreservation  NO       NO   <size>
+	usedbysnapshots  NO       NO   <size>
+	userrefs         NO       NO   <count>
+	written          NO       NO   <size>
+	aclinherit      YES      YES   discard | noallow | restricted | passthrough | passthrough-x
+	acltype         YES      YES   noacl | posixacl
+	atime           YES      YES   on | off
+	canmount        YES       NO   on | off | noauto
+	casesensitivity  NO      YES   sensitive | insensitive | mixed
+	checksum        YES      YES   on | off | fletcher2 | fletcher4 | sha256 | sha512 | skein | edonr
+	compression     YES      YES   on | off | lzjb | gzip | gzip-[1-9] | zle | lz4
+	context         YES       NO   <selinux context>
+	copies          YES      YES   1 | 2 | 3
+	dedup           YES      YES   on | off | verify | sha256[,verify], sha512[,verify], skein[,verify], edonr,verify
+	defcontext      YES       NO   <selinux defcontext>
+	devices         YES      YES   on | off
+	dnodesize       YES      YES   legacy | auto | 1k | 2k | 4k | 8k | 16k
+	encryption       NO      YES   on | off | aes-128-ccm | aes-192-ccm | aes-256-ccm | aes-128-gcm | aes-192-gcm | aes-256-gcm
+	exec            YES      YES   on | off
+	filesystem_limit YES       NO   <count> | none
+	fscontext       YES       NO   <selinux fscontext>
+	keyformat        NO       NO   none | raw | hex | passphrase
+	keylocation     YES       NO   prompt | <file URI>
+	logbias         YES      YES   latency | throughput
+	mlslabel        YES      YES   <sensitivity label>
+	mountpoint      YES      YES   <path> | legacy | none
+	nbmand          YES      YES   on | off
+	normalization    NO      YES   none | formC | formD | formKC | formKD
+	overlay         YES      YES   on | off
+	pbkdf2iters      NO       NO   <iters>
+	primarycache    YES      YES   all | none | metadata
+	quota           YES       NO   <size> | none
+	readonly        YES      YES   on | off
+	recordsize      YES      YES   512 to 1M, power of 2
+	redundant_metadata YES      YES   all | most
+	refquota        YES       NO   <size> | none
+	refreservation  YES       NO   <size> | none
+	relatime        YES      YES   on | off
+	reservation     YES       NO   <size> | none
+	rootcontext     YES       NO   <selinux rootcontext>
+	secondarycache  YES      YES   all | none | metadata
+	setuid          YES      YES   on | off
+	sharenfs        YES      YES   on | off | share(1M) options
+	sharesmb        YES      YES   on | off | sharemgr(1M) options
+	snapdev         YES      YES   hidden | visible
+	snapdir         YES      YES   hidden | visible
+	snapshot_limit  YES       NO   <count> | none
+	special_small_blocks YES      YES   zero or 512 to 1M, power of 2
+	sync            YES      YES   standard | always | disabled
+	utf8only         NO      YES   on | off
+	version         YES       NO   1 | 2 | 3 | 4 | 5 | current
+	volblocksize     NO      YES   512 to 128k, power of 2
+	volmode         YES      YES   default | full | geom | dev | none
+	volsize         YES       NO   <size>
+	vscan           YES      YES   on | off
+	xattr           YES      YES   on | off | dir | sa
+	zoned           YES      YES   on | off
+	userused@...     NO       NO   <size>
+	groupused@...    NO       NO   <size>
+	projectused@...  NO       NO   <size>
+	userobjused@...  NO       NO   <size>
+	groupobjused@...  NO       NO   <size>
+	projectobjused@...  NO       NO   <size>
+	userquota@...   YES       NO   <size> | none
+	groupquota@...  YES       NO   <size> | none
+	projectquota@... YES       NO   <size> | none
+	userobjquota@... YES       NO   <size> | none
+	groupobjquota@... YES       NO   <size> | none
+	projectobjquota@... YES       NO   <size> | none
+	written@<snap>   NO       NO   <size>
+
+Sizes are specified in bytes with standard units such as K, M, G, etc.
+
+User-defined properties can be specified by using a name containing a colon (:).
+
+The {user|group|project}[obj]{used|quota}@ properties must be appended with
+a user|group|project specifier of one of these forms:
+    POSIX name      (eg: "matt")
+    POSIX id        (eg: "126829")
+    SMB name@domain (eg: "matt@sun")
+    SMB SID         (eg: "S-1-234-567-89")
+]0;root@server:/poolmirror/lz4[root@server lz4]# zfs get compression -v[K-all
+invalid option '-'
+usage:
+	get [-rHp] [-d max] [-o "all" | field[,...]]
+	    [-t type[,...]] [-s source[,...]]
+	    <"all" | property[,...]> [filesystem|volume|snapshot|bookmark] ...
+
+The following properties are supported:
+
+	PROPERTY       EDIT  INHERIT   VALUES
+
+	available        NO       NO   <size>
+	clones           NO       NO   <dataset>[,...]
+	compressratio    NO       NO   <1.00x or higher if compressed>
+	createtxg        NO       NO   <uint64>
+	creation         NO       NO   <date>
+	defer_destroy    NO       NO   yes | no
+	encryptionroot   NO       NO   <filesystem | volume>
+	filesystem_count  NO       NO   <count>
+	guid             NO       NO   <uint64>
+	keystatus        NO       NO   none | unavailable | available
+	logicalreferenced  NO       NO   <size>
+	logicalused      NO       NO   <size>
+	mounted          NO       NO   yes | no
+	objsetid         NO       NO   <uint64>
+	origin           NO       NO   <snapshot>
+	receive_resume_token  NO       NO   <string token>
+	refcompressratio  NO       NO   <1.00x or higher if compressed>
+	referenced       NO       NO   <size>
+	snapshot_count   NO       NO   <count>
+	type             NO       NO   filesystem | volume | snapshot | bookmark
+	used             NO       NO   <size>
+	usedbychildren   NO       NO   <size>
+	usedbydataset    NO       NO   <size>
+	usedbyrefreservation  NO       NO   <size>
+	usedbysnapshots  NO       NO   <size>
+	userrefs         NO       NO   <count>
+	written          NO       NO   <size>
+	aclinherit      YES      YES   discard | noallow | restricted | passthrough | passthrough-x
+	acltype         YES      YES   noacl | posixacl
+	atime           YES      YES   on | off
+	canmount        YES       NO   on | off | noauto
+	casesensitivity  NO      YES   sensitive | insensitive | mixed
+	checksum        YES      YES   on | off | fletcher2 | fletcher4 | sha256 | sha512 | skein | edonr
+	compression     YES      YES   on | off | lzjb | gzip | gzip-[1-9] | zle | lz4
+	context         YES       NO   <selinux context>
+	copies          YES      YES   1 | 2 | 3
+	dedup           YES      YES   on | off | verify | sha256[,verify], sha512[,verify], skein[,verify], edonr,verify
+	defcontext      YES       NO   <selinux defcontext>
+	devices         YES      YES   on | off
+	dnodesize       YES      YES   legacy | auto | 1k | 2k | 4k | 8k | 16k
+	encryption       NO      YES   on | off | aes-128-ccm | aes-192-ccm | aes-256-ccm | aes-128-gcm | aes-192-gcm | aes-256-gcm
+	exec            YES      YES   on | off
+	filesystem_limit YES       NO   <count> | none
+	fscontext       YES       NO   <selinux fscontext>
+	keyformat        NO       NO   none | raw | hex | passphrase
+	keylocation     YES       NO   prompt | <file URI>
+	logbias         YES      YES   latency | throughput
+	mlslabel        YES      YES   <sensitivity label>
+	mountpoint      YES      YES   <path> | legacy | none
+	nbmand          YES      YES   on | off
+	normalization    NO      YES   none | formC | formD | formKC | formKD
+	overlay         YES      YES   on | off
+	pbkdf2iters      NO       NO   <iters>
+	primarycache    YES      YES   all | none | metadata
+	quota           YES       NO   <size> | none
+	readonly        YES      YES   on | off
+	recordsize      YES      YES   512 to 1M, power of 2
+	redundant_metadata YES      YES   all | most
+	refquota        YES       NO   <size> | none
+	refreservation  YES       NO   <size> | none
+	relatime        YES      YES   on | off
+	reservation     YES       NO   <size> | none
+	rootcontext     YES       NO   <selinux rootcontext>
+	secondarycache  YES      YES   all | none | metadata
+	setuid          YES      YES   on | off
+	sharenfs        YES      YES   on | off | share(1M) options
+	sharesmb        YES      YES   on | off | sharemgr(1M) options
+	snapdev         YES      YES   hidden | visible
+	snapdir         YES      YES   hidden | visible
+	snapshot_limit  YES       NO   <count> | none
+	special_small_blocks YES      YES   zero or 512 to 1M, power of 2
+	sync            YES      YES   standard | always | disabled
+	utf8only         NO      YES   on | off
+	version         YES       NO   1 | 2 | 3 | 4 | 5 | current
+	volblocksize     NO      YES   512 to 128k, power of 2
+	volmode         YES      YES   default | full | geom | dev | none
+	volsize         YES       NO   <size>
+	vscan           YES      YES   on | off
+	xattr           YES      YES   on | off | dir | sa
+	zoned           YES      YES   on | off
+	userused@...     NO       NO   <size>
+	groupused@...    NO       NO   <size>
+	projectused@...  NO       NO   <size>
+	userobjused@...  NO       NO   <size>
+	groupobjused@...  NO       NO   <size>
+	projectobjused@...  NO       NO   <size>
+	userquota@...   YES       NO   <size> | none
+	groupquota@...  YES       NO   <size> | none
+	projectquota@... YES       NO   <size> | none
+	userobjquota@... YES       NO   <size> | none
+	groupobjquota@... YES       NO   <size> | none
+	projectobjquota@... YES       NO   <size> | none
+	written@<snap>   NO       NO   <size>
+
+Sizes are specified in bytes with standard units such as K, M, G, etc.
+
+User-defined properties can be specified by using a name containing a colon (:).
+
+The {user|group|project}[obj]{used|quota}@ properties must be appended with
+a user|group|project specifier of one of these forms:
+    POSIX name      (eg: "matt")
+    POSIX id        (eg: "126829")
+    SMB name@domain (eg: "matt@sun")
+    SMB SID         (eg: "S-1-234-567-89")
+]0;root@server:/poolmirror/lz4[root@server lz4]# 
+]0;root@server:/poolmirror/lz4[root@server lz4]# 
+]0;root@server:/poolmirror/lz4[root@server lz4]# zfs get compressratio
+NAME               PROPERTY       VALUE  SOURCE
+poolmirror         compressratio  1.08x  -
+poolmirror/gzip    compressratio  1.08x  -
+poolmirror/gzip-n  compressratio  1.08x  -
+poolmirror/lsjb    compressratio  1.07x  -
+poolmirror/lz4     compressratio  1.08x  -
+poolmirror/zle     compressratio  1.08x  -
+]0;root@server:/poolmirror/lz4[root@server lz4]# exit
+exit
+]0;vagrant@server:~[vagrant@server ~]$ exit
+logout
+Connection to 127.0.0.1 closed.
+]0;kapsar@home: ~/otus/lesson4[01;32mkapsar@home[00m:[01;34m~/otus/lesson4[00m$ exit
+exit
+
+Script done on 2021-05-14 01:56:24+03:00 [COMMAND_EXIT_CODE="0"]
